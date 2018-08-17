@@ -4,12 +4,13 @@ before_install()
 {
   echo -e "\n\nExecuting Before Install...\n\n"
 
-  if [ -z "$ANDROID_PLATFORM_VERSIONS" ]; then
-    echo "Android platform versions was not set, exiting..."
-    exit 1
-  elif [ -z "$ANDROID_BUILD_TOOLS" ]; then
-  
-  fi
+  echo "Checking the inputs..."
+  [[ -z "$ANDROID_PLATFORM_VERSIONS" ]] && { echo -e "ERROR: Android platform versions was not set, exiting...\n" ; exit 1 ; }
+  [[ -z "$ANDROID_PLATFORM_VERSIONS" ]] && { echo -e "ERROR: Android build tools was not set, exiting..\n" ; exit 1 ; }
+  [[ -z "$GITLAB_INSTANCE_URL" ]] && { echo -e "ERROR: Gitlab instance URL was not set, exiting..\n" ; exit 1 ; }
+  [[ -z "$GITLAB_CI_TOKEN" ]] && { echo -e "ERROR: Gitlab-CI token was not set, exiting..\n" ; exit 1 ; }
+  [[ -z "$GITLAB_CI_DESCRIPTION" ]] && { echo -e "ERROR: Gitlab-CI description not set, exiting..\n" ; exit 1 ; }
+  [[ -z "$GITLAB_CI_TAGS" ]] && { echo -e "ERROR: Gitlab-CI tags was not set, exiting..\n" ; exit 1 ; }
 
   # Installing the pyton command to add repository in debian
   apt-get install -y software-properties-common
@@ -124,17 +125,6 @@ install_gitlab_runner()
 
 main ()
 {
-#  before_install
-#  install_java
-#  install_android_sdk
-#  install_android_sdk_manager_packages
-#  install_gitlab_runner
-  echo "hi"
-}
-
-
-main ()
-{
   before_install
 #  install_java
 #  install_android_sdk
@@ -142,10 +132,16 @@ main ()
 #  install_gitlab_runner
 }
 
+echo -e "\nPlease enter the android platform versions (comma separated)"
 read ANDROID_PLATFORM_VERSIONS
+echo "Please enter the android build tools versions (comma separated)"
 read ANDROID_BUILD_TOOLS
+echo "Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com )"
 read GITLAB_INSTANCE_URL
+echo "Please enter the gitlab-ci token for this runner"
 read GITLAB_CI_TOKEN
+echo "Please enter the gitlab-ci description for this runner"
 read GITLAB_CI_DESCRIPTION
+echo "Please enter the gitlab-ci tags for this runner (comma separated)"
 read GITLAB_CI_TAGS
 main
