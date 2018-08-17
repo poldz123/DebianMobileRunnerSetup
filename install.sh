@@ -105,6 +105,7 @@ install_android_sdk_manager_packages()
 {
   echo -e "\n\nInstalling Android SDK Manager Packages...\n\n"
   yes | sdkmanager --licenses
+  sdkmanager --update
   sdkmanager --verbose \
 	     "platform-tools" \
 	     "tools" \
@@ -124,7 +125,7 @@ install_gitlab_runner()
   # Install the latest version of GitLab Runner
   apt-get install gitlab-runner
   # Update the runner
-  apt-get install gitlab-runner
+  apt-get update gitlab-runner
 
   # Unregister all of the runners before registering a new one
   if which gitlab-runner > /dev/null; then
