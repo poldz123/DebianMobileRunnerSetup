@@ -8,11 +8,25 @@ before_install()
 
   echo "Checking the inputs..."
   [[ -z "$ANDROID_PLATFORM_VERSIONS" ]] && { echo -e "ERROR: Android platform versions was not set, exiting...\n" ; exit 1 ; }
-  [[ -z "$ANDROID_PLATFORM_VERSIONS" ]] && { echo -e "ERROR: Android build tools was not set, exiting..\n" ; exit 1 ; }
+  [[ -z "$ANDROID_BUILD_TOOLS" ]] && { echo -e "ERROR: Android build tools was not set, exiting..\n" ; exit 1 ; }
   [[ -z "$GITLAB_INSTANCE_URL" ]] && { echo -e "ERROR: Gitlab instance URL was not set, exiting..\n" ; exit 1 ; }
   [[ -z "$GITLAB_CI_TOKEN" ]] && { echo -e "ERROR: Gitlab-CI token was not set, exiting..\n" ; exit 1 ; }
   [[ -z "$GITLAB_CI_DESCRIPTION" ]] && { echo -e "ERROR: Gitlab-CI description not set, exiting..\n" ; exit 1 ; }
   [[ -z "$GITLAB_CI_TAGS" ]] && { echo -e "ERROR: Gitlab-CI tags was not set, exiting..\n" ; exit 1 ; }
+
+  platform_version_regex="^[0-9]+$"
+  for platform_version in ${ANDROID_PLATFORM_VERSIONS//,/ } ; do
+    if ! [[ $platform_version =~ $platform_version_regex ]] ; then
+      echo "ERROR: $platform_version is not a valid platform version, exitting..."; exit 1
+    fi
+  done
+
+  build_tools_version_regex="^[0-9]+[.][0-9]+[.][0-9]+?$"
+  for build_tools_version in ${ANDROID_BUILD_TOOLS//,/ } ; do
+    if ! [[ $build_tools_version =~ $build_tools_version_regex ]] ; then
+      echo "ERROR: $build_tools_version is not a valid build tool version, exitting..."; exit 1
+    fi
+  done
 
   # Installing the pyton command to add repository in debian
   apt-get install -y software-properties-common
@@ -127,16 +141,16 @@ install_gitlab_runner()
 
 main ()
 {
-#  before_install
+  before_install
 #  install_java
-  install_android_sdk
-  install_android_sdk_manager_packages
+#  install_android_sdk
+#  install_android_sdk_manager_packages
 #  install_gitlab_runner
 }
 
-echo -e "\nPlease enter the android platform versions (comma separated) (e.g. 23.0.1,24.0.1)"
+echo -e "\nPlease enter the android platform versions (comma separated) (e.g 21,22,24)"
 read ANDROID_PLATFORM_VERSIONS
-echo "Please enter the android build tools versions (comma separated) (e.g 21,22,24)"
+echo "Please enter the android build tools versions (comma separated) (e.g. 23.0.1,24.0.1)"
 read ANDROID_BUILD_TOOLS
 echo "Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com )"
 read GITLAB_INSTANCE_URL
