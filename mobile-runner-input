@@ -1,9 +1,10 @@
-1
-2
-3
-4
-5
-6
-7
-8
+# Change this line as the Android Platform-Versions (comma separated) (e.g 21,22,24,25)
+# Change this line as the Android Build-Tools-Versions (comma separated) (e.g. 23.0.1,24.0.1)
+# Change this line as the Gitlab-CI coordinator URL (e.g. https://gitlab.com)
+# Change this line as the Gitlab-CI token for this runner
+# Change this line as the Gitlab-CI description for this runner
+# Change this lien as the Gitlab-CI tags for this runner (comma separated) (e.g. android,ui-test,unit-test)
 
+## Remember to remove all of this comments and only the information should exist on this file nothing more
+## or nothing less. This is a input file that is going to be sent to the script to skip all of the input
+## intead of inputting them within the terminal. REMOVE REMOVE REMOVE...

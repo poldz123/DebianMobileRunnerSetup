@@ -14,13 +14,13 @@ before_install()
   [[ -z "$GITLAB_CI_DESCRIPTION" ]] && { echo -e "ERROR: Gitlab-CI description not set, exiting..\n" ; exit 1 ; }
   [[ -z "$GITLAB_CI_TAGS" ]] && { echo -e "ERROR: Gitlab-CI tags was not set, exiting..\n" ; exit 1 ; }
 
+  echo "Validating the input version numbers..."
   platform_version_regex="^[0-9]+$"
   for platform_version in ${ANDROID_PLATFORM_VERSIONS//,/ } ; do
     if ! [[ $platform_version =~ $platform_version_regex ]] ; then
       echo "ERROR: $platform_version is not a valid platform version, exitting..."; exit 1
     fi
   done
-
   build_tools_version_regex="^[0-9]+[.][0-9]+[.][0-9]+?$"
   for build_tools_version in ${ANDROID_BUILD_TOOLS//,/ } ; do
     if ! [[ $build_tools_version =~ $build_tools_version_regex ]] ; then
@@ -36,12 +36,7 @@ before_install()
 
 after_install()
 {
--  echo "Executing After Install..."
-}
-
-set_up_environment_variables()
-{
-  echo "Setting up the Environment Variables"
+  echo "Executing After Install..."
 }
 
 install_java()
@@ -131,21 +126,40 @@ install_gitlab_runner()
   # Update the runner
   apt-get install gitlab-runner
 
-
   # Unregister all of the runners before registering a new one
-  gitlab-runner verify --delete
-  gitlab-runner unregister --all-runners
-  # Register the runner within gitlab
-  gitlab-runner register
+  if which gitlab-runner > /dev/null; then
+    gitlab-runner verify --delete
+    gitlab-runner unregister --all-runners
+  fi
+  # Register the runner within gitlab using non-interactive
+  gitlab-runner register \
+    --url "$GITLAB_INSTANCE_URL" \
+    --registration-token "$GITLAB_CI_TOKEN" \
+    --name "$GITLAB_CI_DESCRIPTION" \
+    --tag-list "$GITLAB_CI_TAGS" \
+    --executor shell \
+    --limit 1 \
+    --locked="false" \
+    --non-interactive
+
+  # Re-install the runner to properly set which user the runner service is going to be executed.
+  gitlab-runner uninstall &> /dev/null || true
+  gitlab-runner install \
+    --user="gitlab-runner" \
+    --working-directory="/home/gitlab-runner"
+  # Make sure to start the gitlab runner after it was installed. After installation
+  # the runner service is stopped by default that would cause the runner within gilab to show
+  # that is has not yet recieved connection with the runner yet.
+  gitlab-runner start
 }
 
 main ()
 {
-  before_install
-#  install_java
-#  install_android_sdk
-#  install_android_sdk_manager_packages
-#  install_gitlab_runner
+  #before_install
+  #install_java
+  #install_android_sdk
+  #install_android_sdk_manager_packages
+  install_gitlab_runner
 }
 
 echo -e "\nPlease enter the android platform versions (comma separated) (e.g 21,22,24)"
