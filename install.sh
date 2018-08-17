@@ -3,6 +3,14 @@
 before_install()
 {
   echo -e "\n\nExecuting Before Install...\n\n"
+
+  if [ -z "$ANDROID_PLATFORM_VERSIONS" ]; then
+    echo "Android platform versions was not set, exiting..."
+    exit 1
+  elif [ -z "$ANDROID_BUILD_TOOLS" ]; then
+  
+  fi
+
   # Installing the pyton command to add repository in debian
   apt-get install -y software-properties-common
   apt-get install dirmngr
@@ -121,6 +129,23 @@ main ()
 #  install_android_sdk
 #  install_android_sdk_manager_packages
 #  install_gitlab_runner
+  echo "hi"
 }
 
+
+main ()
+{
+  before_install
+#  install_java
+#  install_android_sdk
+#  install_android_sdk_manager_packages
+#  install_gitlab_runner
+}
+
+read ANDROID_PLATFORM_VERSIONS
+read ANDROID_BUILD_TOOLS
+read GITLAB_INSTANCE_URL
+read GITLAB_CI_TOKEN
+read GITLAB_CI_DESCRIPTION
+read GITLAB_CI_TAGS
 main
