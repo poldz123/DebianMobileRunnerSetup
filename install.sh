@@ -99,8 +99,8 @@ install_android_sdk_manager_packages()
   sdkmanager --verbose \
 	     "platform-tools" \
 	     "tools" \
-	     "platforms;android-"{21,22,23,24,25,26,27} \
-             "build-tools;"{27.0.3,28.0.2}
+	     $(printf "platforms;android-%s " ${ANDROID_PLATFORM_VERSIONS//,/ }) \
+             $(printf "build-tools;%s " ${ANDROID_BUILD_TOOLS//,/ })
   sdkmanager --verbose --update
   chmod +x -R $ANDROID_SDK_DIRECTORY_PLATFORM_TOOLS
 }
@@ -127,16 +127,16 @@ install_gitlab_runner()
 
 main ()
 {
-  before_install
+#  before_install
 #  install_java
-#  install_android_sdk
-#  install_android_sdk_manager_packages
+  install_android_sdk
+  install_android_sdk_manager_packages
 #  install_gitlab_runner
 }
 
-echo -e "\nPlease enter the android platform versions (comma separated)"
+echo -e "\nPlease enter the android platform versions (comma separated) (e.g. 23.0.1,24.0.1)"
 read ANDROID_PLATFORM_VERSIONS
-echo "Please enter the android build tools versions (comma separated)"
+echo "Please enter the android build tools versions (comma separated) (e.g 21,22,24)"
 read ANDROID_BUILD_TOOLS
 echo "Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com )"
 read GITLAB_INSTANCE_URL
