@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 before_install()
 {
   echo -e "\n\nExecuting Before Install...\n\n"
