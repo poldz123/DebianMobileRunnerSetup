@@ -11,7 +11,7 @@ before_install()
 
 after_install()
 {
-  echo "Executing After Install..."
+-  echo "Executing After Install..."
 }
 
 set_up_environment_variables()
@@ -94,22 +94,33 @@ install_android_sdk_manager_packages()
   chmod +x -R $ANDROID_SDK_DIRECTORY_PLATFORM_TOOLS
 }
 
-registerRunner()
+install_gitlab_runner()
 {
-  echo -e "\n\nRegistering Gitlab Runner...\n\n"
-}
+  echo -e "\n\nInstalling Gitlab Runner...\n\n"
 
-unregisterRunner()
-{
-  echo "Unregistering Gitlab Runner..."
+  # Add GitLab's official repository:
+  curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | bash
+  echo -e "Explanation: Prefer GitLab provided packages over the Debian native ones\nPackage: gitlab-runner\nPin: origin packages.gitlab.com\nPin-Priority: 1001" > "/etc/apt/preferences.d/pin-gitlab-runner.pref"
+  # Install the latest version of GitLab Runner
+  apt-get install gitlab-runner
+  # Update the runner
+  apt-get install gitlab-runner
+
+
+  # Unregister all of the runners before registering a new one
+  gitlab-runner verify --delete
+  gitlab-runner unregister --all-runners
+  # Register the runner within gitlab
+  gitlab-runner register
 }
 
 main ()
 {
-  before_install
-  install_java
-  install_android_sdk
-  install_android_sdk_manager_packages
+#  before_install
+#  install_java
+#  install_android_sdk
+#  install_android_sdk_manager_packages
+#  install_gitlab_runner
 }
 
 main
