@@ -155,10 +155,10 @@ install_gitlab_runner()
 
 main ()
 {
-  #before_install
-  #install_java
-  #install_android_sdk
-  #install_android_sdk_manager_packages
+  before_install
+  install_java
+  install_android_sdk
+  install_android_sdk_manager_packages
   install_gitlab_runner
 }
 
