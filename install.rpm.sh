@@ -130,7 +130,7 @@ install_gitlab_runner()
   # Add GitLab's official repository:
   curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.rpm.sh | sudo bash
   # Install the latest version of GitLab Runner
-  yum install gitlab-runner
+  yum -y install gitlab-runner
 
   # Unregister all of the runners before registering a new one
   if which gitlab-runner > /dev/null; then
