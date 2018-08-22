@@ -128,10 +128,9 @@ install_gitlab_runner()
   echo -e "\n\nInstalling Gitlab Runner...\n\n"
 
   # Add GitLab's official repository:
-  curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | bash
-  echo -e "Explanation: Prefer GitLab provided packages over the Debian native ones\nPackage: gitlab-runner\nPin: origin packages.gitlab.com\nPin-Priority: 1001" > "/etc/apt/preferences.d/pin-gitlab-runner.pref"
+  curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.rpm.sh | sudo bash
   # Install the latest version of GitLab Runner
-  apt-get install gitlab-runner
+  yum install gitlab-runner
 
   # Unregister all of the runners before registering a new one
   if which gitlab-runner > /dev/null; then
@@ -162,11 +161,11 @@ install_gitlab_runner()
 
 main ()
 {
-#  before_install
+  before_install
   install_java
-#  install_android_sdk
-#  install_android_sdk_manager_packages
-#  install_gitlab_runner
+  install_android_sdk
+  install_android_sdk_manager_packages
+  install_gitlab_runner
 }
 
 echo -e "\nPlease enter the android platform versions (comma separated) (e.g 21,22,24)"
