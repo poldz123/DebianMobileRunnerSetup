@@ -124,8 +124,6 @@ install_gitlab_runner()
   echo -e "Explanation: Prefer GitLab provided packages over the Debian native ones\nPackage: gitlab-runner\nPin: origin packages.gitlab.com\nPin-Priority: 1001" > "/etc/apt/preferences.d/pin-gitlab-runner.pref"
   # Install the latest version of GitLab Runner
   apt-get install gitlab-runner
-  # Update the runner
-  apt-get update gitlab-runner
 
   # Unregister all of the runners before registering a new one
   if which gitlab-runner > /dev/null; then
