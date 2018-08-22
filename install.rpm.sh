@@ -41,15 +41,26 @@ install_java()
   echo -e "\n\nInstalling Java...\n\n"
   
   JAVA_JRE_VERSION="jre-8u181-linux-x64.rpm"
-  JAVA_JDK_VERSION="jre-8u181-linux-x64.rpm" 
+  JAVA_JDK_VERSION="jdk-8u181-linux-x64.rpm" 
   
   if ! [ -x "$(command -v java)" ] ||
        [ $(java -version 2>&1 | grep -i version | sed 's/.*version ".*\.\(.*\)\..*"/\1/; 1q') -lt 8 ]; then
     echo "Java JRE 8 is not installed, installing..."
     wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/$JAVA_JRE_VERSION"
     yum localinstall -y $JAVA_JRE_VERSION 
+    rm $JAVA_JRE_VERSION
   else
-    echo "Java JRE 8 has alredy been installed, skipping..."
+    echo "Java JRE 8 has already been installed, skipping..."
+  fi
+
+  if ! [ -x "$(command -v javac)" ] ||
+       [ $(javac -version 2>&1 | grep -i javac | sed 's/.*javac .*\.\(.*\)\..*/\1/; 1q') -lt 8 ]; then
+    echo "Java JDK 8 is not installed, installing..."
+    wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/$JAVA_JDK_VERSION"
+    yum localinstall -y $JAVA_JDK_VERSION 
+    rm $JAVA_JDK_VERSION
+  else
+    echo "Java JDK 8 has already been installed, skipping..."
   fi
 }
  
