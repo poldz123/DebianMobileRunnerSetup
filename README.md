@@ -17,7 +17,7 @@ Currently right now it only support [Debian-based distributions](https://en.wiki
 
 To run the script you need to have root access and execute this command.
 ```bash
-sudo bash -c "$(curl -L https://raw.githubusercontent.com/poldz123/GitlabMobileRunnerSetup/master/install-deb.sh)"
+sudo bash -c "$(curl -L https://raw.githubusercontent.com/poldz123/GitlabMobileRunnerSetup/master/install.deb.sh)"
 ```
 
 ### Running with input file
@@ -35,7 +35,7 @@ of the comments should be removed.
 
 To run the script with input file you need to have root access and execute this command.
 ```bash
-sudo bash -c "$(curl -L https://raw.githubusercontent.com/poldz123/GitlabMobileRunnerSetup/master/install-deb.sh)" < NAME_OF_THE_INPUT_FILE
+sudo bash -c "$(curl -L https://raw.githubusercontent.com/poldz123/GitlabMobileRunnerSetup/master/install.deb.sh)" < NAME_OF_THE_INPUT_FILE
 ```
 
 Right as the end of the command above there is this `< NAME_OF_THE_INPUT_FILE` that is the filled input file that is passed to the script.
