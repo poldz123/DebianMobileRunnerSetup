@@ -11,14 +11,22 @@ all of the informations are ask and validated before the actual installation.
 
 ## Specification
 
-Currently right now it only support [Debian-based distributions](https://en.wikipedia.org/wiki/Category:Debian-based_distributions) since the script is mainly using the `apt` package management.
+Currently right now it only support [linux-based distributions](https://en.wikipedia.org/wiki/List_of_Linux_distributions).
+
+| Script | Description |
+| --- | --- |
+| install.deb.sh | Debian/Ubuntu/Mint |
+| install.linux-amd64.sh | RHEL/CentOS/Fedora |
+| install.rpm.sh | Linux 64-bit |
 
 ## Running
 
 To run the script you need to have root access and execute this command.
 ```bash
-sudo bash -c "$(curl -L https://raw.githubusercontent.com/poldz123/GitlabMobileRunnerSetup/master/install.deb.sh)"
+sudo bash -c "$(curl -L https://raw.githubusercontent.com/poldz123/GitlabMobileRunnerSetup/master/TARGET_PLATFORM_SCRIPT)"
 ```
+
+`TARGET_PLATFORM_SCRIPT` is the platform specific script on which you are installing to, this can be found in the specifics.
 
 ### Running with input file
 
@@ -35,7 +43,7 @@ of the comments should be removed.
 
 To run the script with input file you need to have root access and execute this command.
 ```bash
-sudo bash -c "$(curl -L https://raw.githubusercontent.com/poldz123/GitlabMobileRunnerSetup/master/install.deb.sh)" < NAME_OF_THE_INPUT_FILE
+sudo bash -c "$(curl -L https://raw.githubusercontent.com/poldz123/GitlabMobileRunnerSetup/master/TARGET_PLATFORM_SCRIPT)" < NAME_OF_THE_INPUT_FILE
 ```
 
 Right as the end of the command above there is this `< NAME_OF_THE_INPUT_FILE` that is the filled input file that is passed to the script.
