@@ -119,15 +119,19 @@ install_android_sdk_manager_packages()
 install_gitlab_runner()
 {
   echo -e "\n\nInstalling Gitlab Runner...\n\n"
-
-  wget -O /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64
-  chmod +x /usr/local/bin/gitlab-runner
-  curl -sSL https://get.docker.com/ | sh
-  useradd --comment 'GitLab Runner' --create-home gitlab-runner --shell /bin/bash
-  gitlab-runner install --user=gitlab-runner --working-directory=/home/gitlab-runner
-  gitlab-runner start 
-
-  # Unregister all of the runners before registering a new one
+  GITLAB_RUNNER_PATH="/usr/lib/gitlab-runner"
+  GITLAB_RUNNER_SH_FILE="/etc/profile.d/gitlab_runner.sh"
+  if ! [ -x "$(command -v gitlab-runner)" ]; then
+    # Get the gitlab runner binaries
+    wget -O /usr/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64
+    # Set the gitlab-runner to be executable by all of the user
+    chmod +x /usr/bin/gitlab-runner
+    # Install gitlab-runner
+    id -u gitlab-runner &>/dev/null || useradd --comment 'GitLab Runner' --create-home gitlab-runner --shell /bin/bash
+    gitlab-runner install --user=gitlab-runner --working-directory=/home/gitlab-runner
+    gitlab-runner start 
+    # Unregister all of the runners before registering a new one
+  fi
   if which gitlab-runner > /dev/null; then
     gitlab-runner verify --delete
     gitlab-runner unregister --all-runners
